@@ -1,0 +1,148 @@
+\documentclass[tikz,border=0mm,dvipsnames]{standalone}
+\usepackage{physics}
+\usetikzlibrary{backgrounds,angles,quotes,calc,fit,positioning,decorations.pathreplacing,calligraphy,patterns,patterns.meta, math}
+
+\colorlet{mag}{gray!80}
+\definecolor{ms}{RGB}{30,60,120}
+\definecolor{crimson}{RGB}{164,29,48}
+\definecolor{outer}{RGB}{164,29,48}
+\definecolor{middle}{RGB}{239,163,57}
+\definecolor{inner}{RGB}{247,214,74}
+\colorlet{CBMuon}{Black!70!ms}
+\colorlet{segment}{ms!70}
+
+
+\begin{document}
+
+\def\R{0.5}
+\def\sqTh{1.732}
+
+
+\newcommand{\MDTChambers}{
+    \foreach \y in {0,1,2}{
+        \draw[line width =1.25pt, ms!80] (0,\y*2) rectangle +(4,1); 
+        \draw[ms] (-0.9,\y*2+0.5) node[align=center]{MDT\\Chamber};
+    }
+}
+
+\newcommand{\InnerDetector}{
+    \draw[line width =1.25pt, inner!80] (0,-4) rectangle +(4,2);
+    \draw[inner] (-0.9,-3) node[align=center]{Inner\\Detector};    
+}
+
+\def\CB{(0.5,-5) -- (1,-1) to[bend left=10] (3,6.5)}
+
+\newcommand{\IDTrack}{
+    \begin{scope}
+        \clip (0,-4.1) rectangle (4,-1.9);
+        \draw[line width = 2 pt, inner] \CB;
+        \draw[inner] (2,-3) node[]{\textbf{ID Track}};
+    \end{scope}
+}
+
+\newcommand{\MuonSegments}{
+    \begin{scope}
+        \clip (0,-0.1) rectangle (4,1.1);
+        \draw[line width = 2 pt, segment] \CB;
+        \draw[segment] (2.5,0.5) node[xshift=0.1cm]{\textbf{Muon Segment}};
+    \end{scope}
+    \begin{scope}
+        \clip (0,1.9) rectangle (4,3.1);
+        \draw[line width = 2 pt, segment] \CB;
+    \end{scope}
+    \begin{scope}
+        \clip (0,3.9) rectangle (4,5.1);
+        \draw[line width = 2 pt, segment] \CB;
+    \end{scope}
+}
+
+\newcommand{\MSTrack}{
+    \begin{scope}
+        \clip (0,-0.3) rectangle (4,-0.1);
+        \draw[line width = 2 pt, ms] \CB;
+    \end{scope}
+    \begin{scope}
+        \clip (0,1.1) rectangle (4,1.9);
+        \draw[line width = 2 pt, ms] \CB;
+    \end{scope}
+    \begin{scope}
+        \clip (0,3.1) rectangle (4,3.9);
+        \draw[line width = 2 pt, ms] \CB;
+        \draw[ms] (0.9,3.5) node[xshift=-0.1cm]{\textbf{MS Track}};
+    \end{scope}
+    \begin{scope}
+        \clip (0,5.1) rectangle (4,5.3);
+        \draw[line width = 2 pt, ms] \CB;
+    \end{scope}
+}
+
+\newcommand{\CBMuonPath}{
+    \begin{scope}
+        \clip (0,-5) rectangle (4,-4.1);
+        \draw[line width = 2 pt, CBMuon] \CB;
+    \end{scope}
+    \begin{scope}
+        \clip (0,-1.9) rectangle (4,-0.3);
+        \draw[line width = 2 pt, CBMuon] \CB;
+    \end{scope}
+    \begin{scope}
+        \clip (0,5.3) rectangle (4,7);
+        \draw[line width = 2 pt, CBMuon,-stealth] \CB;
+        \draw[CBMuon] (1.5,6) node[]{\textbf{CB Muon}};
+    \end{scope}
+}
+
+\newcommand{\Framing}{
+    \draw[white,thick] (-1.8,-5.1) rectangle (4.1,7.1);
+}
+
+% Multiple MS Segments
+\begin{tikzpicture}[yscale=0.65]
+    \Framing
+    
+    \MDTChambers
+    \MuonSegments
+\end{tikzpicture}
+
+% Introduce MS Track
+\begin{tikzpicture}[yscale=0.65]
+    \Framing
+    
+    \MDTChambers
+    \MuonSegments
+
+    \MSTrack
+\end{tikzpicture}
+
+% Introduce ID track
+\begin{tikzpicture}[yscale=0.65]
+    \Framing
+    
+    \MDTChambers
+    \MuonSegments
+
+    \MSTrack
+
+    \InnerDetector
+    \IDTrack
+\end{tikzpicture}
+
+
+% Final reconstruction picture
+\begin{tikzpicture}[yscale=0.65]
+    \Framing
+    
+    \MDTChambers
+    \MuonSegments
+
+    \MSTrack
+
+    \InnerDetector
+    \IDTrack
+
+    \CBMuonPath
+
+\end{tikzpicture}
+
+
+\end{document}
