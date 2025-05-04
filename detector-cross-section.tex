@@ -1,0 +1,262 @@
+\documentclass[tikz,border=0mm,dvipsnames]{standalone}
+\usepackage{tikz}
+\usepackage{physics}
+\usepackage{circuitikz}
+\usetikzlibrary{backgrounds,angles,quotes,calc,fit,positioning,decorations.pathreplacing,calligraphy,patterns,patterns.meta, math}
+
+
+\colorlet{mag}{gray!80}
+\definecolor{ms}{RGB}{30,60,120}
+\definecolor{outer}{RGB}{164,29,48}
+\definecolor{middle}{RGB}{239,163,57}
+\definecolor{inner}{RGB}{247,214,74}
+
+
+\begin{document}
+
+\def\IDir{0.085} % meters
+\def\IDor{1.165} % meters
+\def\SOir{1.235} % meters
+\def\SOor{1.315} % meters
+\def\ECir{1.385} % meters
+\def\ECor{2.200} % meters
+\def\HCir{2.200} % meters
+\def\HCor{4.100} % meters
+
+
+\newcommand{\magFieldBraces}{
+    \draw [decorate,thick,decoration = {calligraphic brace,mirror,amplitude=6pt}, line width = 1.5pt] (0,-0.6) --  (\SOor,-0.6) node[yshift=-0.575cm,pos=0.5]{Solenoid $B$ Field};
+    \draw [decorate,thick,decoration = {calligraphic brace,mirror,amplitude=6pt}, line width = 1.5pt] (4.7,-0.6) --  (8,-0.6) node[yshift=-0.575cm,pos=0.5]{Toroidal $B$ Field};
+}
+
+\newcommand{\qarc}[3]{
+    \draw[draw=black, fill=#1, line width=0.5pt] (#3, 0) arc (0:90:#3) -- (0,#2) arc (90:0:#2);
+}
+
+\newcommand{\Solenoid}{
+    \qarc{mag}{\SOir}{\SOor}
+}
+
+\newcommand{\InnerDetector}{
+    \qarc{inner}{\IDir}{\IDor}
+}
+
+\newcommand{\ECAL}{
+    \qarc{middle}{\ECir}{\ECor}
+}
+
+\newcommand{\HCAL}{
+    \qarc{outer}{\HCir}{\HCor}
+    \foreach \a in {2.4,7.4,...,87.4}{
+        \draw[draw=black, line width = 1pt, rotate around={\a:(0,0)}] (3.8,0) rectangle ++(0.2,0.1);
+    }
+}
+
+\newcommand{\MS}{
+   \foreach \y in {0, 1}{
+        \draw[fill=ms, draw=black] (4.5+2*\y, 0) rectangle ++(0.25+0.1*\y,1.5+0.5*\y);
+        \draw[fill=ms, draw=black] (0,4.5+2*\y) rectangle ++(1.5+0.5*\y,0.25+0.1*\y);
+    }
+    \draw[draw=black, fill=ms, rotate around={45:(0,0)}] (4.5, -1.85) rectangle (4.75, 1.85);
+    \draw[draw=black, fill=ms, rotate around={45:(0,0)}] (4.5 + 2, -1.85) rectangle (4.75 + 2.15, 1.85);    
+    \foreach \a in {22.5,90-22.5}{
+        \foreach \y in {0, 1}{
+            \draw[draw=black, fill=ms, rotate around={\a:(0,0)}] (4.2+2.95*\y,-0.9-0.75*\y) rectangle (4.45+3.05*\y,0.9+0.75*\y);
+        }
+    }
+}
+
+\newcommand{\structuralSupport}{
+    \fill[pattern={Lines[angle=45,distance=20, xshift=-3]},pattern color=black, draw=black, line width = 1.5pt] (5.25,0.025) -- (6.25,0.025) -- (6.25,2.75) -- (2.75,6.25) -- (0.025,6.25) -- (0.025,5.25) -- (2.25,5.25) -- (5.25,2.25) -- cycle;
+    \node[fill=white, draw=black, line width=1.5pt, rotate = -45] at (4.1,4.1) {Structural Support};
+}
+
+\newcommand{\toroidCoils}{
+    \draw[draw=black, fill=mag, line width = 1pt] (4.5+0.25/2, 2) circle (0.5);
+    \draw[draw=black, fill=mag, line width = 1pt] (2, 4.5+0.25/2) circle (0.5);
+}
+
+\newcommand{\Axes}{
+    \draw[thick,-stealth] (0,0) -- (8,0) node[below,xshift=-0.1cm]{$\hat{\vb{x}}$};
+    \draw[thick,-stealth] (0,0) -- (0,8) node[left,yshift=-0.15cm]{$\hat{\vb{y}}$};
+    % Tick marks
+    \foreach \y in {2,4,...,6} {
+        \draw[thick] (0,\y) -- (-0.15,\y) node[left]{\y~m};
+        \draw[thick] (\y,0) -- (\y,-0.15) node[below]{\y~m};
+    }
+}
+
+\newcommand{\Framing}{
+    \draw[white] (8.15,8.15) rectangle +(-9,-9.65);
+}
+
+\newcommand{\photon}{
+    \draw[Plum,-stealth,line width=1,line cap=round,dash pattern=on 2.3 off 2.0] (15:1.05*\IDir) -- (15:1.8) node[below]{$\gamma$};
+}
+
+\newcommand{\electron}{
+    \draw[BrickRed,-stealth,line width = 1] (50:\IDir) to[out=30,in=270] (70:1.8) node[xshift=0.25cm,yshift=0.1cm]{$e^-$};
+}
+
+\newcommand{\pion}{
+    \draw[TealBlue,-stealth,line width = 1] (30:\IDir) to[out=50,in=180] (30:1.05*\SOor) -- +(1.8,0) node[xshift=0.1cm,yshift=-0.15cm]{$\pi^+$};
+}
+
+\newcommand{\neutron}{
+    \draw[black,-stealth,line width=1,line cap=round,dash pattern=on 2.3 off 2.0] (75:1.05*\IDir) -- (75:3.2) node[right]{$n$};
+}
+
+\newcommand{\muon}{
+    \draw[ms!80,-stealth,line width = 1.5] (20:\IDir) to[bend right=20] (30:2) -- +(47:6) node[xshift=0.25cm,yshift=0.1cm]{$\mu^-$};
+}
+
+% % Axes Only
+\begin{tikzpicture}[scale=1.0]
+    \Framing
+    \Axes
+\end{tikzpicture}
+
+% % Magnets
+\begin{tikzpicture}[scale=1.0]
+    % Establish frame for the image to ensure all pages are the same length
+    \Framing
+
+    % B Field Braces
+    \magFieldBraces
+
+    % Structural Support
+    \structuralSupport
+
+    % Barrel Toroid Coil
+    \toroidCoils
+
+    % Inner Solenoid
+    \Solenoid
+
+    % Axes    
+    \Axes
+\end{tikzpicture}
+
+% % ID
+\begin{tikzpicture}[scale=1.0]
+    % Establish frame for the image to ensure all pages are the same length
+    \Framing
+
+    % B Field Braces
+    \magFieldBraces
+
+    % Inner subdetectors
+    \InnerDetector
+
+    % Structural Support
+    \structuralSupport
+
+    % Barrel Toroid Coil
+    \toroidCoils
+
+    % Inner Solenoid
+    \Solenoid
+
+    % Axes    
+    \Axes
+\end{tikzpicture}
+
+% % ECAL
+\begin{tikzpicture}[scale=1.0]
+    % Establish frame for the image to ensure all pages are the same length
+    \Framing
+
+    % B Field Braces
+    \magFieldBraces
+
+    % Inner subdetectors
+    \InnerDetector
+    \ECAL
+
+    % Structural Support
+    \structuralSupport
+
+    % Barrel Toroid Coil
+    \toroidCoils
+
+    % Inner Solenoid
+    \Solenoid
+
+    % Axes    
+    \Axes
+
+    % Particles
+    \photon
+    \electron
+\end{tikzpicture}
+
+% HCAL
+\begin{tikzpicture}[scale=1.0]
+    % Establish frame for the image to ensure all pages are the same length
+    \Framing
+
+    % B Field Braces
+    \magFieldBraces
+
+    % Inner subdetectors
+    \InnerDetector
+    \ECAL
+    \HCAL
+
+    % Structural Support
+    \structuralSupport
+
+    % Barrel Toroid Coil
+    \toroidCoils
+
+    % Inner Solenoid
+    \Solenoid
+
+    % Axes    
+    \Axes
+
+    % Particles
+    \photon
+    \electron
+    \pion
+    \neutron
+\end{tikzpicture}
+
+% Muon Spectrometer
+\begin{tikzpicture}[scale=1.0]
+    % Establish frame for the image to ensure all pages are the same length
+    \Framing
+
+    % B Field Braces
+    \magFieldBraces
+
+    % Inner subdetectors
+    \InnerDetector
+    \ECAL
+    \HCAL
+
+    % MS
+    \MS
+
+    % Barrel Toroid Coil
+    \toroidCoils
+
+    % Inner Solenoid
+    \Solenoid
+
+    % Axes    
+    \Axes
+
+    % Particles
+    \photon
+    \electron
+    \pion
+    \neutron
+    \muon
+
+    % Structural Support
+    \structuralSupport
+\end{tikzpicture}
+
+
+\end{document}
