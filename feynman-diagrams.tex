@@ -1,0 +1,89 @@
+\documentclass{article}
+\usepackage[active, tightpage]{preview}
+\PreviewEnvironment{fmfgraph*}
+
+\usepackage{feynmp-auto}
+\usepackage{xcolor}
+\pagestyle{empty}
+
+\def\chiz{$\mathrm{\widetilde{\chi}^0_1}$}
+\def\chitz{$\mathrm{\widetilde{\chi}^0_{2}}$}
+\def\chipm{$\mathrm{\widetilde{\chi}^\pm_{1}}$}
+\def\chimp{$\mathrm{\widetilde{\chi}^\mp_{1}}$}
+\def\sGlu{$\mathrm{\widetilde{g}}$}
+\def\sQ{$\mathrm{\widetilde{q}}$}
+\def\sQb{$\mathrm{\overline{\widetilde{q}}}$}
+\def\sBot{$\mathrm{\widetilde{b}_1}$}
+\def\sBotb{$\mathrm{\overline{\widetilde{b}}_1}$}
+\def\sTop{$\mathrm{\widetilde{t}_1}$}
+\def\sTopb{$\mathrm{\overline{\widetilde{t}}_1}$}
+\def\sTopt{$\mathrm{\widetilde{t}_2}$}
+\def\sToptb{$\mathrm{\overline{\widetilde{t}}_2}$}
+\def\sGra{$\mathrm{\widetilde{G}}$}
+\def\PH{$\mathrm{H}$}
+\def\PZ{$\mathrm{Z}$}
+\def\PW{$\mathrm{W^\pm}$}
+\def\Ph{$\mathrm{h}$}
+\def\sLep{$\widetilde{\ell}$}
+\def\sNu{$\widetilde{\nu}$}
+\def\sTau{$\widetilde{\tau}$}
+\newcommand{\anti}[1]{$\mathrm{\overline{#1}}$}
+\def\MainQuark{b}
+
+\definecolor{navy}{RGB}{30,60,120}
+\definecolor{crimson}{RGB}{164,29,48}
+
+\begin{document}
+
+\setlength\PreviewBorder{18pt}
+\begin{preview}
+\begin{fmffile}{LQD-diagram}
+\begin{fmfgraph*}(180,90)
+  \fmfset{arrow_len}{5}%\fmfset{arrow_ang}{0}
+  \fmfleftn{i}{2}
+  \fmfrightn{o}{6}
+  \fmflabel{}{i1}
+  \fmflabel{}{i2}
+
+  \fmf{fermion, tension=2., lab=p, label.side=left}{i1,v1}
+  \fmf{fermion, tension=2., lab=p, label.side=right}{i2,v1}
+
+  \fmf{plain, label=$\tilde{\chi}_1^0$, label.side=left}{v1,v3}
+
+  \fmf{plain, label=$\tilde{\chi}_2^0$, label.side=right}{v1,v2}
+
+  \fmf{fermion}{v3,o6}
+  \fmflabel{$\mu$}{o6}
+  \fmf{dashes, label=$\tilde{\mu}$,label.dist=+3, label.side=right}{v3,v5}
+  \fmf{fermion}{v5,o5}
+  \fmflabel{$q$}{o5}
+  \fmf{fermion}{v5,o4}
+  \fmflabel{$q$}{o4}
+
+  \fmf{fermion}{v2,o1}
+  \fmflabel{$\mu$}{o1}
+  \fmf{dashes, label=$\tilde{\mu}$, label.dist=+3, label.side=left}{v2,v4}
+  \fmf{fermion}{v4,o2}
+  \fmflabel{$q$}{o2}
+  \fmf{fermion}{v4,o3}
+  \fmflabel{$q$}{o3}
+
+  \fmfdot{v2,v3}
+  \fmfv{decor.shape=circle,decor.filled=full,decor.size=4,f=(.117,,.23,,.47),l=\textcolor{navy}{$\lambda'_{211}$},l.d=6,l.a=90}{v4}
+  \fmfv{decor.shape=circle,decor.filled=full,decor.size=4,f=(.117,,.23,,.47),l=\textcolor{navy}{$\lambda'_{211}$},l.d=6,l.a=-90}{v5}
+
+  \fmffreeze
+  \fmf{boson}{v1,v2}
+  \fmf{boson}{v1,v3}
+  \renewcommand{\P}[3]{\fmfi{plain}{vpath(__#1,__#2) shifted (thick*(#3))}}
+  \P{i1}{v1}{1.2,-1.2}
+  \P{i1}{v1}{-1.2,1.2}
+  \P{i2}{v1}{1.2,1.2}
+  \P{i2}{v1}{-1.2,-1.2}
+  \fmfv{decor.shape=circle,decor.filled=30, decor.size=.12w}{v1}
+  % \fmfblob{16}{v1}
+\end{fmfgraph*}
+\end{fmffile}
+\end{preview}
+
+\end{document}
